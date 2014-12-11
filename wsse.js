@@ -335,7 +335,7 @@ export function isodatetime() {
     if (hour <= 9) hour = "0" + hour;
     if (minute <= 9) minute = "0" + minute;
     if (second <= 9) second = "0" + second;
-    time = year + "-" + month + "-" + day + "T"
+    var time = year + "-" + month + "-" + day + "T"
     + hour + ":" + minute + ":" + second + timezone;
     return time;
 }
