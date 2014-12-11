@@ -1,3 +1,6 @@
+/* use strict*/
+/* format es6*/
+
 //
 // wsse.js - Generate WSSE authentication header in JavaScript
 // (C) 2005 Victor R. Ruiz <victor*sixapart.com> - http://rvr.typepad.com/
@@ -37,17 +40,17 @@ var chrsz   = 8;  /* bits per input character. 8 - ASCII; 16 - Unicode      */
  * These are the functions you'll usually want to call
  * They take string arguments and return either hex or base-64 encoded strings
  */
-function hex_sha1(s){return binb2hex(core_sha1(str2binb(s),s.length * chrsz));}
-function b64_sha1(s){return binb2b64(core_sha1(str2binb(s),s.length * chrsz));}
-function str_sha1(s){return binb2str(core_sha1(str2binb(s),s.length * chrsz));}
-function hex_hmac_sha1(key, data){ return binb2hex(core_hmac_sha1(key, data));}
-function b64_hmac_sha1(key, data){ return binb2b64(core_hmac_sha1(key, data));}
-function str_hmac_sha1(key, data){ return binb2str(core_hmac_sha1(key, data));}
+export function hex_sha1(s){return binb2hex(core_sha1(str2binb(s),s.length * chrsz));}
+export function b64_sha1(s){return binb2b64(core_sha1(str2binb(s),s.length * chrsz));}
+export function str_sha1(s){return binb2str(core_sha1(str2binb(s),s.length * chrsz));}
+export function hex_hmac_sha1(key, data){ return binb2hex(core_hmac_sha1(key, data));}
+export function b64_hmac_sha1(key, data){ return binb2b64(core_hmac_sha1(key, data));}
+export function str_hmac_sha1(key, data){ return binb2str(core_hmac_sha1(key, data));}
 
 /*
  * Perform a simple self-test to see if the VM is working
  */
-function sha1_vm_test()
+export function sha1_vm_test()
 {
   return hex_sha1("abc") == "a9993e364706816aba3e25717850c26c9cd0d89d";
 }
@@ -55,7 +58,7 @@ function sha1_vm_test()
 /*
  * Calculate the SHA-1 of an array of big-endian words, and a bit length
  */
-function core_sha1(x, len)
+export function core_sha1(x, len)
 {
   /* append padding */
   x[len >> 5] |= 0x80 << (24 - len % 32);
@@ -103,7 +106,7 @@ function core_sha1(x, len)
  * Perform the appropriate triplet combination function for the current
  * iteration
  */
-function sha1_ft(t, b, c, d)
+export function sha1_ft(t, b, c, d)
 {
   if(t < 20) return (b & c) | ((~b) & d);
   if(t < 40) return b ^ c ^ d;
@@ -114,7 +117,7 @@ function sha1_ft(t, b, c, d)
 /*
  * Determine the appropriate additive constant for the current iteration
  */
-function sha1_kt(t)
+export function sha1_kt(t)
 {
   return (t < 20) ?  1518500249 : (t < 40) ?  1859775393 :
          (t < 60) ? -1894007588 : -899497514;
@@ -123,7 +126,7 @@ function sha1_kt(t)
 /*
  * Calculate the HMAC-SHA1 of a key and some data
  */
-function core_hmac_sha1(key, data)
+export function core_hmac_sha1(key, data)
 {
   var bkey = str2binb(key);
   if(bkey.length > 16) bkey = core_sha1(bkey, key.length * chrsz);
@@ -143,7 +146,7 @@ function core_hmac_sha1(key, data)
  * Add integers, wrapping at 2^32. This uses 16-bit operations internally
  * to work around bugs in some JS interpreters.
  */
-function safe_add(x, y)
+export function safe_add(x, y)
 {
   var lsw = (x & 0xFFFF) + (y & 0xFFFF);
   var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
@@ -153,7 +156,7 @@ function safe_add(x, y)
 /*
  * Bitwise rotate a 32-bit number to the left.
  */
-function rol(num, cnt)
+export function rol(num, cnt)
 {
   return (num << cnt) | (num >>> (32 - cnt));
 }
@@ -162,7 +165,7 @@ function rol(num, cnt)
  * Convert an 8-bit or 16-bit string to an array of big-endian words
  * In 8-bit function, characters >255 have their hi-byte silently ignored.
  */
-function str2binb(str)
+export function str2binb(str)
 {
   var bin = Array();
   var mask = (1 << chrsz) - 1;
@@ -174,7 +177,7 @@ function str2binb(str)
 /*
  * Convert an array of big-endian words to a string
  */
-function binb2str(bin)
+export function binb2str(bin)
 {
   var str = "";
   var mask = (1 << chrsz) - 1;
@@ -186,7 +189,7 @@ function binb2str(bin)
 /*
  * Convert an array of big-endian words to a hex string.
  */
-function binb2hex(binarray)
+export function binb2hex(binarray)
 {
   var hex_tab = hexcase ? "0123456789ABCDEF" : "0123456789abcdef";
   var str = "";
@@ -201,7 +204,7 @@ function binb2hex(binarray)
 /*
  * Convert an array of big-endian words to a base-64 string
  */
-function binb2b64(binarray)
+export function binb2b64(binarray)
 {
   var tab = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
   var str = "";
@@ -222,7 +225,7 @@ function binb2b64(binarray)
 // aardwulf systems
 // This work is licensed under a Creative Commons License.
 // http://www.aardwulf.com/tutor/base64/
-function encode64(input) {
+export function encode64(input) {
     var keyStr = "ABCDEFGHIJKLMNOP" +
                 "QRSTUVWXYZabcdef" +
                 "ghijklmnopqrstuv" +
@@ -291,7 +294,7 @@ function encode64(input) {
 // Reserved but may be freely used provided this colophon is 
 // included in full.
 //
-function isodatetime() {
+export function isodatetime() {
     var today = new Date();
     var year  = today.getYear();
     if (year < 2000)    // Y2K Fix, Isaac Powell
@@ -352,7 +355,7 @@ function isodatetime() {
 //    as: base64(sha1(Nonce . Created . Password))
 //
 
-function wsse(Password) {
+export function wsse(Password) {
     var PasswordDigest, Nonce, Created;
     var r = new Array;
     
@@ -367,7 +370,7 @@ function wsse(Password) {
     return r;
 }
 
-function wsseHeader(Username, Password) {
+export function wsseHeader(Username, Password) {
     var w = wsse(Password);
     var header = 'UsernameToken Username="' + Username + '", PasswordDigest="' + w[2] + '", Created="' + w[1] + '", Nonce="' + w[0] + '"';
     return header;
